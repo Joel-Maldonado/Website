@@ -38,9 +38,63 @@
 			image: '/path/to/project-image.jpg' // Add project screenshots
 		}
 	];
+
+	const sections = [
+		{ id: 'home', title: 'Home' },
+		{ id: 'projects', title: 'Projects' }
+	];
+
+	let activeSection = $state(sections[0].id);
+
+	onMount(() => {
+		animate = true;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						activeSection = entry.target.id;
+					}
+				});
+			},
+			{
+				rootMargin: '-50% 0px',
+				threshold: 0
+			}
+		);
+
+		sections.forEach((section) => {
+			const element = document.getElementById(section.id);
+			if (element) observer.observe(element);
+		});
+
+		// Add smooth scrolling
+		document.querySelectorAll('nav a').forEach((anchor) => {
+			anchor.addEventListener('click', (e) => {
+				e.preventDefault();
+				const targetId = anchor.getAttribute('href')?.slice(1);
+				document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
+			});
+		});
+	});
 </script>
 
-<header class="bg-space-grey/30 relative h-screen overflow-hidden p-12 text-center">
+<div class="fixed left-8 top-1/2 z-20 -translate-y-1/2">
+	<nav class="space-y-4">
+		{#each sections as section}
+			<a
+				href="#{section.id}"
+				class="block text-white/60 transition-colors hover:text-white {activeSection === section.id
+					? 'active'
+					: ''}"
+			>
+				{section.title}
+			</a>
+		{/each}
+	</nav>
+</div>
+
+<header id="home" class="relative h-screen overflow-hidden bg-black/40 p-12 text-center">
 	<Background />
 
 	{#if animate}
@@ -79,12 +133,12 @@
 	{/if}
 </header>
 
-<section class="bg-space-grey/40 relative min-h-screen px-4 py-24 sm:px-6 lg:px-8">
-	<div class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+<section id="projects" class="relative min-h-screen px-4 py-20 sm:px-6 lg:px-8">
+	<div class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60 backdrop-blur-sm"></div>
 	<div class="relative z-10">
-		<h2 class="font-heebo mb-16 text-center text-4xl font-light text-white">Featured Projects</h2>
+		<h2 class="mb-12 text-center font-heebo text-4xl font-light text-white">Featured Projects</h2>
 
-		<div class="mx-auto max-w-4xl space-y-12">
+		<div class="mx-auto max-w-3xl space-y-10">
 			{#each projects as project}
 				<div
 					class="group overflow-hidden rounded-xl bg-neutral-800/100 backdrop-blur-sm transition-all hover:bg-neutral-700/50"
@@ -96,8 +150,8 @@
 							class="object-fit transition-transform duration-300 group-hover:scale-105"
 						/>
 					</div>
-					<div class="p-8">
-						<h3 class="font-heebo mb-4 text-3xl text-white">{project.title}</h3>
+					<div class="p-6">
+						<h3 class="mb-4 font-heebo text-3xl text-white">{project.title}</h3>
 						<p class="mb-6 text-lg leading-relaxed text-white">{project.description}</p>
 
 						<div class="mb-8 flex flex-wrap gap-2">
@@ -137,3 +191,31 @@
 		</div>
 	</div>
 </section>
+
+<style>
+	:global(body) {
+		background: linear-gradient(
+			180deg,
+			rgba(47, 47, 47, 0.3) 0%,
+			rgba(47, 47, 47, 0.4) 50%,
+			rgba(47, 47, 47, 0.5) 100%
+		);
+	}
+
+	nav a {
+		font-size: 1.1rem;
+		font-weight: 500;
+		padding: 0.5rem 1rem;
+		border-left: 2px solid rgba(255, 255, 255, 0.1);
+		text-decoration: none;
+	}
+
+	nav a:hover {
+		border-left: 2px solid rgba(255, 255, 255, 0.5);
+	}
+
+	nav a.active {
+		border-left: 2px solid rgba(255, 255, 255, 1);
+		color: white;
+	}
+</style>
