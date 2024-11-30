@@ -2,14 +2,14 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
-	const circleCount = 50;
+	const circleCount = 30;
 	const circlePropCount = 8;
 	const circlePropsLength = circleCount * circlePropCount;
 	const baseSpeed = 0.02;
 	const rangeSpeed = 0.03;
 	const baseTTL = 400;
 	const rangeTTL = 800;
-	const baseRadius = 20;
+	const baseRadius = 30;
 	const rangeRadius = 200;
 	const rangeHue = 120;
 	const xOff = 0.0015;

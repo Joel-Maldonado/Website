@@ -11,6 +11,9 @@ export default {
 			fontFamily: {
 				'heebo': ['Heebo', 'sans-serif'],
 			},
+			colors: {
+				'space-grey': '#707070'
+			},
 
 		}
 	},
