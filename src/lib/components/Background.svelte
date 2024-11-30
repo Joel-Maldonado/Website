@@ -2,16 +2,16 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
-	const circleCount = 30;
+	const circleCount = 50;
 	const circlePropCount = 8;
 	const circlePropsLength = circleCount * circlePropCount;
 	const baseSpeed = 0.02;
 	const rangeSpeed = 0.03;
 	const baseTTL = 400;
 	const rangeTTL = 800;
-	const baseRadius = 25;
+	const baseRadius = 20;
 	const rangeRadius = 200;
-	const rangeHue = 1200;
+	const rangeHue = 120;
 	const xOff = 0.0015;
 	const yOff = 0.0015;
 	const zOff = 0.0015;
@@ -34,8 +34,19 @@
 	};
 
 	function initCircle(i) {
-		let x = rand(canvasA.width);
-		let y = rand(canvasA.height);
+		let x, y;
+		const centerBias = 0.85; // Increased bias
+
+		if (Math.random() < centerBias) {
+			// Gaussian-like distribution around center
+			x = canvasA.width * (0.5 + (Math.random() + Math.random() - 1) * 0.3);
+			y = canvasA.height * (0.5 + (Math.random() + Math.random() - 1) * 0.3);
+		} else {
+			// Random position for remaining circles
+			x = rand(canvasA.width);
+			y = rand(canvasA.height);
+		}
+
 		let n = Math.random();
 		let t = rand(TAU);
 		let speed = baseSpeed + rand(rangeSpeed);
@@ -45,14 +56,6 @@
 		let ttl = baseTTL + rand(rangeTTL);
 		let radius = (baseRadius + rand(rangeRadius)) * 0.2;
 		let hue = baseHue + n * rangeHue;
-
-		if (i in circleProps) {
-			const centerBias = 0.7;
-			if (Math.random() < centerBias) {
-				x = canvasA.width * (0.3 + rand(0.4));
-				y = canvasA.height * (0.3 + rand(0.4));
-			}
-		}
 
 		circleProps.set([x, y, vx, vy, life, ttl, radius, hue], i);
 	}
