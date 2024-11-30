@@ -5,49 +5,26 @@
 	import Background from '$lib/components/Background.svelte';
 
 	let animate = $state(false);
-	onMount(() => {
+	let showTableOfContents = $state(false);
+	let projects = $state([]);
+
+	const INITIAL_DELAY = 1200; // First icon appears after this delay
+	const DELAY_BETWEEN = 200; // Delay between each icon animation
+
+	onMount(async () => {
 		animate = true;
-	});
 
-	const projects = [
-		{
-			title: 'Brainstorm: A Deep Learning Chess Engine',
-			description:
-				'An experimental chess engine that combines deep learning with traditional chess search techniques. Built in Rust, it uses a neural network trained on 37 million chess positions as its evaluation function, trading computational speed for pattern recognition. The project explores whether lower search depth can be compensated for by encoding positional understanding directly into the evaluation function.',
-			technologies: ['Rust', 'PyTorch (libtorch)', 'Python', 'Neural Networks', 'UCI Protocol'],
-			github: 'https://github.com/Joel-Maldonado/Brainstorm',
-			live: null,
-			image: 'https://github.com/user-attachments/assets/b22f3bfb-d127-4862-a539-0a2b10d19ec0'
-		},
-		{
-			title: 'Project Name',
-			description:
-				'A detailed description of the project highlighting its key features, technologies used, and the problems it solves. This can be a few sentences long to give visitors a good understanding of the project.',
-			technologies: ['React', 'Node.js', 'MongoDB'],
-			github: 'https://github.com/username/project',
-			live: 'https://project-demo.com',
-			image: '/path/to/project-image.jpg' // Add project screenshots
-		},
-		{
-			title: 'Project Name',
-			description:
-				'A detailed description of the project highlighting its key features, technologies used, and the problems it solves. This can be a few sentences long to give visitors a good understanding of the project.',
-			technologies: ['React', 'Node.js', 'MongoDB'],
-			github: 'https://github.com/username/project',
-			live: 'https://project-demo.com',
-			image: '/path/to/project-image.jpg' // Add project screenshots
-		}
-	];
+		const scrollHandler = () => {
+			if (window.scrollY > window.innerHeight * 0.5) {
+				showTableOfContents = true;
+				window.removeEventListener('scroll', scrollHandler);
+			}
+		};
+		window.addEventListener('scroll', scrollHandler);
 
-	const sections = [
-		{ id: 'home', title: 'Home' },
-		{ id: 'projects', title: 'Projects' }
-	];
-
-	let activeSection = $state(sections[0].id);
-
-	onMount(() => {
-		animate = true;
+		const response = await fetch('/api/projects?limit=2');
+		const data = await response.json();
+		projects = data.projects;
 
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -68,8 +45,8 @@
 			if (element) observer.observe(element);
 		});
 
-		// Add smooth scrolling
-		document.querySelectorAll('nav a').forEach((anchor) => {
+		// Make the selector more specific to only target table of contents links
+		document.querySelectorAll('.table-of-contents[data-scroll-nav] a').forEach((anchor) => {
 			anchor.addEventListener('click', (e) => {
 				e.preventDefault();
 				const targetId = anchor.getAttribute('href')?.slice(1);
@@ -77,52 +54,71 @@
 			});
 		});
 	});
+
+	const sections = [
+		{ id: 'home', title: 'Home' },
+		{ id: 'projects', title: 'Projects' }
+	];
+
+	let activeSection = $state(sections[0].id);
 </script>
 
-<div class="fixed left-8 top-1/2 z-20 -translate-y-1/2">
-	<nav class="space-y-4">
-		{#each sections as section}
-			<a
-				href="#{section.id}"
-				class="block text-white/60 transition-colors hover:text-white {activeSection === section.id
-					? 'active'
-					: ''}"
-			>
-				{section.title}
-			</a>
-		{/each}
-	</nav>
-</div>
+{#if showTableOfContents}
+	<div class="fixed left-8 top-1/2 z-20 -translate-y-1/2" transition:fade={{ duration: 300 }}>
+		<nav class="table-of-contents space-y-4" data-scroll-nav>
+			{#each sections as section}
+				<a
+					href="#{section.id}"
+					class="block text-white/60 transition-colors hover:text-white {activeSection ===
+					section.id
+						? 'active'
+						: ''}"
+				>
+					{section.title}
+				</a>
+			{/each}
+		</nav>
+	</div>
+{/if}
 
 <header id="home" class="relative h-screen overflow-hidden bg-black/40 p-12 text-center">
 	<Background />
 
 	{#if animate}
 		<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
-			<h1 in:fly={{ y: -40, duration: 2300 }} class="font-heebo text-8xl text-white">
+			<h1 in:fly={{ y: -40, duration: 2000 }} class="font-heebo text-8xl text-white">
 				Joel Maldonado-Ruiz
 			</h1>
 
 			<ul class="flex items-center px-16">
-				<li transition:fade={{ delay: 1500 }}>
+				<li transition:fade={{ delay: INITIAL_DELAY }}>
 					<a href="https://github.com/Joel-Maldonado" target="_blank" rel="noopener"
 						><Icon icon="mdi:github" class="text-6xl text-white" /></a
 					>
 				</li>
-				<li class="mx-4 h-12 w-px bg-white/20" transition:fade={{ delay: 1700 }}></li>
-				<li transition:fade={{ delay: 1900 }}>
+				<li
+					class="mx-4 h-12 w-px bg-white/20"
+					transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN }}
+				></li>
+				<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 2 }}>
 					<a href="https://www.linkedin.com/in/joel-maldonado-ruiz/" target="_blank" rel="noopener"
 						><Icon icon="mdi:linkedin" class="text-6xl text-white" /></a
 					>
 				</li>
-				<li class="mx-4 h-12 w-px bg-white/20" transition:fade={{ delay: 2100 }}></li>
-				<li transition:fade={{ delay: 2300 }}>
+				<li
+					class="mx-4 h-12 w-px bg-white/20"
+					transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 3 }}
+				></li>
+				<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 4 }}>
 					<a href="mailto:maldonjo@oregonstate.edu" target="_blank" rel="noopener"
 						><Icon icon="mdi:email" class="text-6xl text-white" /></a
 					>
 				</li>
-				<li class="mx-4 h-12 w-px bg-white/20" transition:fade={{ delay: 2500 }}></li>
-				<li transition:fade={{ delay: 2800 }}>
+				<li
+					class="mx-4 h-12 w-px bg-white/20"
+					transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 5 }}
+				></li>
+				<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 6 }}>
 					<!-- TODO: Fix resume link -->
 					<a href="https://drive.google.com/file/d/1dlkfjsdlksd" target="_blank" rel="noopener"
 						><Icon icon="mdi:file-document" class="text-6xl text-white" /></a
@@ -188,6 +184,16 @@
 					</div>
 				</div>
 			{/each}
+
+			<div class="mt-12 text-center">
+				<a
+					href="/projects"
+					class="inline-flex items-center gap-2 rounded-lg bg-neutral-800/80 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-neutral-700/80"
+				>
+					<span>See All Projects</span>
+					<Icon icon="mdi:arrow-right" class="text-2xl" />
+				</a>
+			</div>
 		</div>
 	</div>
 </section>
