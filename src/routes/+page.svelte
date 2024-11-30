@@ -15,7 +15,7 @@
 
 	{#if animate}
 		<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
-			<h1 in:fly={{ y: -40, duration: 2300 }} class="font-poppins text-8xl text-white">
+			<h1 in:fly={{ y: -40, duration: 2300 }} class="font-heebo text-8xl text-white">
 				Joel Maldonado-Ruiz
 			</h1>
 
