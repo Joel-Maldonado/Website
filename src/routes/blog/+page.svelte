@@ -3,6 +3,7 @@
 	import Icon from '@iconify/svelte';
 	import Background from '$lib/components/Background.svelte';
 	import { onMount } from 'svelte';
+	import BlogCard from '$lib/components/BlogCard.svelte';
 
 	const blogPosts = [
 		{
@@ -61,59 +62,12 @@
 			<main class="mx-auto max-w-7xl px-4 pb-20">
 				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					{#each blogPosts as post, index}
-						<article
-							class="group overflow-hidden rounded-lg bg-neutral-800/100 backdrop-blur-sm transition-all hover:bg-neutral-700/50"
-							in:staggeredFade|global={{ delay: index * 150 }}
-						>
-							{#if post.image}
-								<div class="aspect-[16/9] w-full overflow-hidden">
-									<img
-										src={post.image}
-										alt={post.title}
-										class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-									/>
-								</div>
-							{/if}
-							<div class="p-4">
-								<div class="mb-2 flex items-center gap-2 text-xs text-white/60">
-									<span>{post.date}</span>
-									<span>•</span>
-									<span>{post.readTime}</span>
-								</div>
-								<h2 class="mb-2 font-heebo text-xl text-white">
-									<a href={`/blog/${post.slug}`} class="hover:text-blue-400">
-										{post.title}
-									</a>
-								</h2>
-								<p class="mb-4 line-clamp-3 text-sm leading-relaxed text-white/80">
-									{post.description}
-								</p>
-
-								<div class="flex flex-wrap gap-1">
-									{#each post.tags as tag}
-										<span
-											class="rounded-full bg-neutral-700/50 px-2 py-1 text-xs font-medium text-white/80"
-										>
-											{tag}
-										</span>
-									{/each}
-								</div>
-							</div>
-						</article>
+						<div in:staggeredFade|global={{ delay: index * 150 }}>
+							<BlogCard {...post} />
+						</div>
 					{/each}
 				</div>
 			</main>
 		</div>
 	{/if}
 </div>
-
-<style>
-	:global(body) {
-		background: linear-gradient(
-			180deg,
-			rgba(47, 47, 47, 0.3) 0%,
-			rgba(47, 47, 47, 0.4) 50%,
-			rgba(47, 47, 47, 0.5) 100%
-		);
-	}
-</style>

@@ -3,6 +3,8 @@
 	import { fade, fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import Background from '$lib/components/Background.svelte';
+	import Card from '$lib/components/ProjectCard.svelte';
+	import ProjectCard from '$lib/components/ProjectCard.svelte';
 
 	let animate = $state(false);
 	let showTableOfContents = $state(false);
@@ -15,7 +17,8 @@
 		animate = true;
 
 		const scrollHandler = () => {
-			if (window.scrollY > window.innerHeight * 0.5) {
+			if (window.scrollY > 100) {
+				// Changed from window.innerHeight * 0.5 to 100
 				showTableOfContents = true;
 				window.removeEventListener('scroll', scrollHandler);
 			}
@@ -81,12 +84,16 @@
 	</div>
 {/if}
 
-<header id="home" class="relative h-screen overflow-hidden bg-black/40 p-12 text-center">
+<header id="home" class="relative h-screen overflow-hidden bg-space-grey/10 p-12 text-center">
 	<Background />
 
 	{#if animate}
 		<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
-			<h1 in:fly={{ y: -40, duration: 2000 }} class="font-heebo text-8xl text-white">
+			<h1
+				in:fly={{ y: -40, duration: 2000 }}
+				class="title-glow font-heebo text-8xl text-white drop-shadow-[0_2.4px_2.4px_rgba(0,0,0,0.8)]
+"
+			>
 				Joel Maldonado-Ruiz
 			</h1>
 
@@ -130,59 +137,15 @@
 </header>
 
 <section id="projects" class="relative min-h-screen px-4 py-20 sm:px-6 lg:px-8">
-	<div class="absolute inset-0 bg-gradient-to-b from-black/40 to-black/60 backdrop-blur-sm"></div>
+	<div
+		class="absolute inset-0 bg-gradient-to-b from-space-grey/10 to-space-grey/20 backdrop-blur-sm"
+	></div>
 	<div class="relative z-10">
-		<h2 class="mb-12 text-center font-heebo text-4xl font-light text-white">Featured Projects</h2>
+		<h2 class="mb-12 text-center font-heebo text-4xl text-white">Featured Projects</h2>
 
 		<div class="mx-auto max-w-3xl space-y-10">
 			{#each projects as project}
-				<div
-					class="group overflow-hidden rounded-xl bg-neutral-800/100 backdrop-blur-sm transition-all hover:bg-neutral-700/50"
-				>
-					<div class="aspect-video w-full overflow-hidden">
-						<img
-							src={project.image}
-							alt={project.title}
-							class="object-fit transition-transform duration-300 group-hover:scale-105"
-						/>
-					</div>
-					<div class="p-6">
-						<h3 class="mb-4 font-heebo text-3xl text-white">{project.title}</h3>
-						<p class="mb-6 text-lg leading-relaxed text-white">{project.description}</p>
-
-						<div class="mb-8 flex flex-wrap gap-2">
-							{#each project.technologies as tech}
-								<span
-									class="rounded-full bg-neutral-700/50 px-4 py-1.5 text-sm font-medium text-white/80"
-									>{tech}</span
-								>
-							{/each}
-						</div>
-
-						<div class="flex gap-6">
-							<a
-								href={project.github}
-								class="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
-								target="_blank"
-								rel="noopener"
-							>
-								<Icon icon="mdi:github" class="text-2xl" />
-								<span>View Code</span>
-							</a>
-							{#if project.live}
-								<a
-									href={project.live}
-									class="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
-									target="_blank"
-									rel="noopener"
-								>
-									<Icon icon="mdi:open-in-new" class="text-2xl" />
-									<span>Live Demo</span>
-								</a>
-							{/if}
-						</div>
-					</div>
-				</div>
+				<ProjectCard {...project} />
 			{/each}
 
 			<div class="mt-12 text-center">
@@ -199,13 +162,40 @@
 </section>
 
 <style>
-	:global(body) {
-		background: linear-gradient(
-			180deg,
-			rgba(47, 47, 47, 0.3) 0%,
-			rgba(47, 47, 47, 0.4) 50%,
-			rgba(47, 47, 47, 0.5) 100%
-		);
+	@keyframes glow {
+		0% {
+			text-shadow:
+				0 0 30px rgba(255, 255, 255, 0.1),
+				0 0 60px rgba(255, 255, 255, 0.05);
+		}
+		25% {
+			text-shadow:
+				0 0 30px rgba(255, 255, 255, 0.3),
+				0 0 60px rgba(255, 255, 255, 0.2),
+				0 0 90px rgba(255, 255, 255, 0.1);
+		}
+		50% {
+			text-shadow:
+				0 0 30px rgba(255, 255, 255, 0.5),
+				0 0 60px rgba(255, 255, 255, 0.3),
+				0 0 90px rgba(255, 255, 255, 0.2);
+		}
+		75% {
+			text-shadow:
+				0 0 30px rgba(255, 255, 255, 0.3),
+				0 0 60px rgba(255, 255, 255, 0.2),
+				0 0 90px rgba(255, 255, 255, 0.1);
+		}
+		100% {
+			text-shadow:
+				0 0 30px rgba(255, 255, 255, 0.1),
+				0 0 60px rgba(255, 255, 255, 0.05);
+		}
+	}
+
+	.title-glow {
+		/* animation: glow 8s cubic-bezier(0.4, 0, 0.2, 1) 2; */
+		letter-spacing: -0.02em;
 	}
 
 	nav a {

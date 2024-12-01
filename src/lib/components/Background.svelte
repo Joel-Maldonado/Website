@@ -2,22 +2,24 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
-	const circleCount = 50;
+	const circleCount = 20;
 	const circlePropCount = 8;
 	const circlePropsLength = circleCount * circlePropCount;
-	const baseSpeed = 0.02;
-	const rangeSpeed = 0.03;
+	const baseSpeed = 0.01;
+	const rangeSpeed = 0.02;
 	const baseTTL = 400;
-	const rangeTTL = 800;
-	const baseRadius = 20;
+	const rangeTTL = 700;
+	const baseRadius = 40;
 	const rangeRadius = 100;
-	const rangeHue = 120;
+	const rangeHue = 10;
 	const xOff = 0.0015;
 	const yOff = 0.0015;
 	const zOff = 0.0015;
 	const backgroundColor = 'hsla(0,0%,0%,1)';
 	const TAU = Math.PI * 2;
-	const parallaxFactor = 0.25; // Controls how much the circles move with scroll
+	let scrollY = 0;
+	const parallaxStrength = 0.3; // Controls how much the circles move relative to scroll
+	const blurAmount = 70; // Added blur amount variable
 
 	let container;
 	let canvasA;
@@ -25,7 +27,8 @@
 	let circleProps;
 	let baseHue;
 	let animationFrame;
-	let scrollY = 0; // Track scroll position
+	let isReady = false;
+	const INITIAL_DELAY = 800; // 800ms delay before circles appear
 
 	const rand = (n) => n * Math.random();
 	const fadeInOut = (t, m) => {
@@ -37,7 +40,7 @@
 
 	function initCircle(i) {
 		let x, y;
-		const centerBias = 0.85;
+		const centerBias = 0.75;
 
 		if (Math.random() < centerBias) {
 			x = canvasA.width * (0.5 + (Math.random() + Math.random() - 1) * 0.3);
@@ -96,8 +99,8 @@
 		let radius = circleProps[i7];
 		let hue = circleProps[i8];
 
-		// Apply parallax effect based on scroll position
-		const parallaxOffset = scrollY * parallaxFactor;
+		// Apply parallax offset to y position
+		const parallaxOffset = scrollY * parallaxStrength;
 		const adjustedY = y - parallaxOffset;
 
 		ctxA.save();
@@ -120,7 +123,7 @@
 			circleProps[i7] = radius;
 		}
 
-		if (checkBounds(x, adjustedY, radius) || life > ttl) {
+		if (checkBounds(x, y, radius) || life > ttl) {
 			initCircle(i);
 		}
 	}
@@ -143,7 +146,8 @@
 		updateCircles();
 
 		ctxB.save();
-		ctxB.filter = 'blur(100px)';
+		ctxB.filter = `blur(${blurAmount}px)`;
+		ctxB.globalAlpha = 0.8;
 		ctxB.drawImage(canvasA, 0, 0);
 		ctxB.restore();
 
@@ -159,10 +163,6 @@
 
 		canvasB.width = innerWidth;
 		canvasB.height = innerHeight;
-	}
-
-	function handleScroll() {
-		scrollY = window.scrollY;
 	}
 
 	onMount(() => {
@@ -181,23 +181,42 @@
 
 		resize();
 		initCircles();
-		render();
+
+		// Add delay before starting animation
+		setTimeout(() => {
+			isReady = true;
+			render();
+		}, INITIAL_DELAY);
+
+		// Add scroll listener
+		const handleScroll = () => {
+			scrollY = window.pageYOffset;
+		};
+
+		window.addEventListener('scroll', handleScroll, { passive: true });
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
 
 		window.addEventListener('resize', resize);
-		window.addEventListener('scroll', handleScroll);
 	});
 
 	onDestroy(() => {
 		if (!browser) return;
 		window.removeEventListener('resize', resize);
-		window.removeEventListener('scroll', handleScroll);
 		if (animationFrame) {
 			cancelAnimationFrame(animationFrame);
 		}
 	});
 </script>
 
-<div bind:this={container} class="fixed inset-0 h-full w-full"></div>
+<div
+	bind:this={container}
+	class="fixed inset-0 h-full w-full {isReady
+		? 'opacity-100'
+		: 'opacity-0'} transition-opacity duration-1000"
+></div>
 
 <style>
 	div {
