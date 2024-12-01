@@ -5,28 +5,8 @@
 	import { onMount } from 'svelte';
 	import BlogCard from '$lib/components/BlogCard.svelte';
 
-	const blogPosts = [
-		{
-			title: 'Building a Neural Network Chess Engine',
-			description:
-				'Deep dive into the development process of Brainstorm, exploring the challenges and solutions in combining neural networks with traditional chess engines.',
-			date: '2024-01-15',
-			readTime: '10 min read',
-			tags: ['Chess Engine', 'Neural Networks', 'Rust', 'AI'],
-			image: 'https://example.com/chess-engine.jpg',
-			slug: 'building-neural-network-chess-engine'
-		},
-		{
-			title: 'Understanding Alpha-Beta Pruning',
-			description:
-				'A technical exploration of the alpha-beta pruning algorithm and its implementation in chess engines.',
-			date: '2024-01-01',
-			readTime: '8 min read',
-			tags: ['Algorithms', 'Chess', 'Game Theory'],
-			image: 'https://example.com/alpha-beta.jpg',
-			slug: 'understanding-alpha-beta-pruning'
-		}
-	];
+	let { data } = $props();
+	let blogPosts = data.blogPosts;
 
 	let animate = $state(false);
 	onMount(() => {
@@ -48,7 +28,7 @@
 </script>
 
 <div class="relative min-h-screen">
-	<Background />
+	<Background circleCount="5" blurAmount="100" />
 
 	{#if animate}
 		<div class="relative z-10">

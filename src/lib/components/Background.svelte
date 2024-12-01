@@ -2,15 +2,20 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { browser } from '$app/environment';
 
-	const circleCount = 20;
+	let {
+		circleCount = 5,
+		baseSpeed = 0.01,
+		rangeSpeed = 0.02,
+		baseRadius = 30,
+		rangeRadius = 100,
+		parallaxStrength = 0.3,
+		blurAmount = 70
+	} = $props();
+
 	const circlePropCount = 8;
 	const circlePropsLength = circleCount * circlePropCount;
-	const baseSpeed = 0.01;
-	const rangeSpeed = 0.02;
 	const baseTTL = 400;
 	const rangeTTL = 700;
-	const baseRadius = 40;
-	const rangeRadius = 100;
 	const rangeHue = 10;
 	const xOff = 0.0015;
 	const yOff = 0.0015;
@@ -18,8 +23,6 @@
 	const backgroundColor = 'hsla(0,0%,0%,1)';
 	const TAU = Math.PI * 2;
 	let scrollY = 0;
-	const parallaxStrength = 0.3; // Controls how much the circles move relative to scroll
-	const blurAmount = 70; // Added blur amount variable
 
 	let container;
 	let canvasA;
@@ -27,8 +30,8 @@
 	let circleProps;
 	let baseHue;
 	let animationFrame;
-	let isReady = false;
-	const INITIAL_DELAY = 800; // 800ms delay before circles appear
+	let isReady = $state(false);
+	const INITIAL_DELAY = 700; // delay before circles appear
 
 	const rand = (n) => n * Math.random();
 	const fadeInOut = (t, m) => {
@@ -213,7 +216,7 @@
 
 <div
 	bind:this={container}
-	class="fixed inset-0 h-full w-full {isReady
+	class="fixed inset-0 h-[8000px] w-full {isReady
 		? 'opacity-100'
 		: 'opacity-0'} transition-opacity duration-1000"
 ></div>
