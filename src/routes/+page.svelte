@@ -10,8 +10,8 @@
 	let showTableOfContents = $state(false);
 	let projects = $state([]);
 
-	const INITIAL_DELAY = 1200; // First icon appears after this delay
-	const DELAY_BETWEEN = 150; // Delay between each icon animation
+	const INITIAL_DELAY = 800; // First icon appears after this delay
+	const DELAY_BETWEEN = 180; // Delay between each icon animation
 
 	onMount(async () => {
 		animate = true;
@@ -194,7 +194,7 @@
 	}
 
 	.title-glow {
-		/* animation: glow 8s cubic-bezier(0.4, 0, 0.2, 1) 2; */
+		animation: glow 8s cubic-bezier(0.4, 0, 0.2, 1) 1;
 		letter-spacing: -0.02em;
 	}
 

@@ -3,26 +3,33 @@
 	import { browser } from '$app/environment';
 
 	let {
-		circleCount = 10, // Increased count
-		baseSpeed = 0.02, // Increased base speed
-		rangeSpeed = 0.03, // Increased speed variation
-		baseRadius = 35, // Reduced base radius
-		rangeRadius = 60, // Reduced radius range
-		parallaxStrength = 0.7,
-		blurAmount = 90, // Reduced blur for sharper connections
-		initialDelay = 400,
-		baseTTL = 500,
-		rangeTTL = 700,
+		circleCount = 5,
+		baseSpeed = 0.02,
+		rangeSpeed = 0.03,
+		baseRadius = 40,
+		rangeRadius = 60,
+		parallaxStrength = 1,
+		blurAmount = 100,
+		initialDelay = 0,
+		baseTTL = 700,
+		rangeTTL = 1000,
 		centerBias = 0.95,
-		connectionDistance = 150 // New parameter for connection distance
+		connectionDistance = 1000,
+		burstSpeedMultiplier = 1,
+		burstDuration = 10,
+		burstBaseRadius = 50,
+		burstRangeRadius = 60
 	} = $props();
 
-	// Convert string props to numbers
 	circleCount = Number(circleCount);
 	blurAmount = Number(blurAmount);
 	initialDelay = Number(initialDelay);
 	baseTTL = Number(baseTTL);
 	rangeTTL = Number(rangeTTL);
+	burstSpeedMultiplier = Number(burstSpeedMultiplier);
+	burstDuration = Number(burstDuration);
+	burstBaseRadius = Number(burstBaseRadius);
+	burstRangeRadius = Number(burstRangeRadius);
 
 	const circlePropCount = 8;
 	const circlePropsLength = circleCount * circlePropCount;
@@ -41,6 +48,7 @@
 	let baseHue;
 	let animationFrame;
 	let isReady = $state(false);
+	let isBurst = $state(true); // New state for burst phase
 
 	const rand = (n) => n * Math.random();
 	const fadeInOut = (t, m) => {
@@ -68,7 +76,15 @@
 		let vy = speed * Math.sin(t);
 		let life = 0;
 		let ttl = baseTTL + rand(rangeTTL);
-		let radius = (baseRadius + rand(rangeRadius)) * 0.2;
+
+		// Use different radius range during burst
+		let radius;
+		if (isBurst) {
+			radius = (burstBaseRadius + rand(burstRangeRadius)) * 0.2;
+		} else {
+			radius = (baseRadius + rand(rangeRadius)) * 0.2;
+		}
+
 		let hue = baseHue + n * rangeHue;
 
 		circleProps.set([x, y, vx, vy, life, ttl, radius, hue], i);
@@ -78,6 +94,7 @@
 		circleProps = new Float32Array(circlePropsLength);
 		baseHue = 220;
 
+		// Initialize regular circles
 		for (let i = 0; i < circlePropsLength; i += circlePropCount) {
 			initCircle(i);
 			circleProps[i + 4] = (i / circlePropCount) * (baseTTL / circleCount);
@@ -123,16 +140,23 @@
 		ctxA.closePath();
 		ctxA.restore();
 
-		life++;
+		// Speed up life during burst phase
+		if (isBurst) {
+			life += burstSpeedMultiplier;
+		} else {
+			life++;
+		}
 
-		circleProps[i] = x + vx;
-		circleProps[i2] = y + vy;
-		circleProps[i5] = life;
-
+		// Handle radius growth consistently, regardless of burst
 		if (life < 50) {
 			radius = radius * 1.05;
 			circleProps[i7] = radius;
 		}
+
+		// Normal movement always
+		circleProps[i] = x + vx;
+		circleProps[i2] = y + vy;
+		circleProps[i5] = life;
 
 		if (checkBounds(x, y, radius) || life > ttl) {
 			initCircle(i);
@@ -169,10 +193,13 @@
 
 	function updateCircles() {
 		baseHue += 0.1;
+
+		// Update regular circles
 		for (let i = 0; i < circlePropsLength; i += circlePropCount) {
 			updateCircle(i);
 		}
-		drawConnections(); // Add connection drawing
+
+		drawConnections();
 	}
 
 	function render() {
@@ -226,6 +253,11 @@
 		setTimeout(() => {
 			isReady = true;
 			render();
+
+			// End burst phase after burstDuration
+			setTimeout(() => {
+				isBurst = false;
+			}, burstDuration);
 		}, initialDelay);
 
 		// Add scroll listener

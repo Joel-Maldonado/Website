@@ -5,7 +5,7 @@
 </script>
 
 <article
-	class="group overflow-hidden rounded-lg bg-neutral-800 backdrop-blur-sm transition-all hover:bg-neutral-700"
+	class="group overflow-hidden rounded-lg bg-neutral-800 shadow-lg shadow-black backdrop-blur-sm transition-all hover:bg-neutral-700"
 >
 	{#if image}
 		<div class="aspect-video w-full overflow-hidden">

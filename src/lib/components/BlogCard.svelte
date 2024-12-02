@@ -3,7 +3,7 @@
 </script>
 
 <article
-	class="group overflow-hidden rounded-lg bg-neutral-800/100 backdrop-blur-sm transition-all hover:bg-neutral-700/50"
+	class="group overflow-hidden rounded-lg bg-neutral-800/100 shadow-lg shadow-black backdrop-blur-sm transition-all hover:bg-neutral-700"
 >
 	{#if thumbnail}
 		<div class="aspect-[16/9] w-full overflow-hidden">
