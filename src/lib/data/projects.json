@@ -14,19 +14,6 @@
             "github": "https://github.com/Joel-Maldonado/Brainstorm",
             "live": null,
             "image": "chess.webp"
-        },
-        {
-            "title": "Project Name",
-            "date": "2023-12-01",
-            "description": "A detailed description of the project highlighting its key features, technologies used, and the problems it solves. This can be a few sentences long to give visitors a good understanding of the project.",
-            "technologies": [
-                "React",
-                "Node.js",
-                "MongoDB"
-            ],
-            "github": "https://github.com/username/project",
-            "live": "https://project-demo.com",
-            "image": "/path/to/project-image.jpg"
         }
     ]
 }

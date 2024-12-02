@@ -12,8 +12,17 @@
 	});
 </script>
 
-<div class="min-h-screen bg-space-grey/10">
-	<Background />
+<div class="min-h-screen bg-gradient-to-b from-space-grey/10 via-space-grey/20 to-space-grey/10">
+	<Background
+		circleCount={5}
+		blurAmount={120}
+		initialDelay={0}
+		baseTTL={1200}
+		rangeTTL={1500}
+		centerBias={0.1}
+		baseRadius={30}
+		rangeRadius={50}
+	/>
 
 	<div class="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
 		<div class="mx-auto max-w-3xl">

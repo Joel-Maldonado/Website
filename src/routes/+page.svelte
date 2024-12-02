@@ -11,7 +11,7 @@
 	let projects = $state([]);
 
 	const INITIAL_DELAY = 1200; // First icon appears after this delay
-	const DELAY_BETWEEN = 200; // Delay between each icon animation
+	const DELAY_BETWEEN = 150; // Delay between each icon animation
 
 	onMount(async () => {
 		animate = true;
@@ -90,7 +90,7 @@
 	{#if animate}
 		<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
 			<h1
-				in:fly={{ y: -40, duration: 2000 }}
+				in:fly={{ y: -40, duration: 1800 }}
 				class="title-glow font-heebo text-8xl text-white drop-shadow-[0_2.4px_2.4px_rgba(0,0,0,0.8)]
 "
 			>

@@ -27,8 +27,19 @@
 	}
 </script>
 
-<div class="relative min-h-screen">
-	<Background circleCount="5" blurAmount="100" />
+<div
+	class="relative min-h-screen bg-gradient-to-b from-space-grey/10 via-space-grey/20 to-space-grey/10"
+>
+	<Background
+		circleCount={10}
+		blurAmount={120}
+		initialDelay={0}
+		baseTTL={1200}
+		rangeTTL={1500}
+		centerBias={0.1}
+		baseRadius={30}
+		rangeRadius={50}
+	/>
 
 	{#if animate}
 		<div class="relative z-10">

@@ -3,19 +3,28 @@
 	import { browser } from '$app/environment';
 
 	let {
-		circleCount = 5,
+		circleCount = 10,
 		baseSpeed = 0.01,
 		rangeSpeed = 0.02,
-		baseRadius = 30,
-		rangeRadius = 100,
-		parallaxStrength = 0.3,
-		blurAmount = 70
+		baseRadius = 35,
+		rangeRadius = 50,
+		parallaxStrength = 0.6,
+		blurAmount = 120,
+		initialDelay = 500,
+		baseTTL = 400,
+		rangeTTL = 700,
+		centerBias = 0.95
 	} = $props();
+
+	// Convert string props to numbers
+	circleCount = Number(circleCount);
+	blurAmount = Number(blurAmount);
+	initialDelay = Number(initialDelay);
+	baseTTL = Number(baseTTL);
+	rangeTTL = Number(rangeTTL);
 
 	const circlePropCount = 8;
 	const circlePropsLength = circleCount * circlePropCount;
-	const baseTTL = 400;
-	const rangeTTL = 700;
 	const rangeHue = 10;
 	const xOff = 0.0015;
 	const yOff = 0.0015;
@@ -31,7 +40,6 @@
 	let baseHue;
 	let animationFrame;
 	let isReady = $state(false);
-	const INITIAL_DELAY = 700; // delay before circles appear
 
 	const rand = (n) => n * Math.random();
 	const fadeInOut = (t, m) => {
@@ -43,7 +51,6 @@
 
 	function initCircle(i) {
 		let x, y;
-		const centerBias = 0.75;
 
 		if (Math.random() < centerBias) {
 			x = canvasA.width * (0.5 + (Math.random() + Math.random() - 1) * 0.3);
@@ -189,7 +196,7 @@
 		setTimeout(() => {
 			isReady = true;
 			render();
-		}, INITIAL_DELAY);
+		}, initialDelay);
 
 		// Add scroll listener
 		const handleScroll = () => {

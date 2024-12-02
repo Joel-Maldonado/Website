@@ -25,12 +25,9 @@
 	};
 </script>
 
-<div class="min-h-screen bg-space-grey/10">
-	<Background parallaxStrength="0.05" />
+<div class="min-h-screen bg-space-grey/20">
 	<div class="flex justify-center p-4 sm:p-6 lg:p-8">
-		<div
-			class="relative mt-5 w-[850px] rounded-lg border-neutral-700 bg-neutral-800 shadow-2xl backdrop-blur-lg"
-		>
+		<div class="relative mt-5 w-[850px] rounded-lg">
 			<div class="relative z-10 px-6 py-12 sm:px-8 lg:px-12">
 				<article class="prose prose-invert mx-auto max-w-3xl">
 					<header class="mb-8 text-center">
