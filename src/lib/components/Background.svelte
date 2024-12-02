@@ -3,17 +3,18 @@
 	import { browser } from '$app/environment';
 
 	let {
-		circleCount = 10,
-		baseSpeed = 0.01,
-		rangeSpeed = 0.02,
-		baseRadius = 35,
-		rangeRadius = 50,
-		parallaxStrength = 0.6,
-		blurAmount = 120,
-		initialDelay = 500,
-		baseTTL = 400,
+		circleCount = 10, // Increased count
+		baseSpeed = 0.02, // Increased base speed
+		rangeSpeed = 0.03, // Increased speed variation
+		baseRadius = 35, // Reduced base radius
+		rangeRadius = 60, // Reduced radius range
+		parallaxStrength = 0.7,
+		blurAmount = 90, // Reduced blur for sharper connections
+		initialDelay = 400,
+		baseTTL = 500,
 		rangeTTL = 700,
-		centerBias = 0.95
+		centerBias = 0.95,
+		connectionDistance = 150 // New parameter for connection distance
 	} = $props();
 
 	// Convert string props to numbers
@@ -29,7 +30,7 @@
 	const xOff = 0.0015;
 	const yOff = 0.0015;
 	const zOff = 0.0015;
-	const backgroundColor = 'hsla(0,0%,0%,1)';
+	const backgroundColor = 'hsla(0%,0%,0%,1)';
 	const TAU = Math.PI * 2;
 	let scrollY = 0;
 
@@ -138,11 +139,40 @@
 		}
 	}
 
+	function drawConnections() {
+		const ctxA = canvasA.getContext('2d');
+
+		for (let i = 0; i < circlePropsLength; i += circlePropCount) {
+			const x1 = circleProps[i];
+			const y1 = circleProps[i + 1];
+
+			for (let j = i + circlePropCount; j < circlePropsLength; j += circlePropCount) {
+				const x2 = circleProps[j];
+				const y2 = circleProps[j + 1];
+
+				const dx = x2 - x1;
+				const dy = y2 - y1;
+				const distance = Math.sqrt(dx * dx + dy * dy);
+
+				if (distance < connectionDistance) {
+					const opacity = (1 - distance / connectionDistance) * 0.15;
+					ctxA.beginPath();
+					ctxA.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
+					ctxA.lineWidth = 1;
+					ctxA.moveTo(x1, y1);
+					ctxA.lineTo(x2, y2);
+					ctxA.stroke();
+				}
+			}
+		}
+	}
+
 	function updateCircles() {
 		baseHue += 0.1;
 		for (let i = 0; i < circlePropsLength; i += circlePropCount) {
 			updateCircle(i);
 		}
+		drawConnections(); // Add connection drawing
 	}
 
 	function render() {

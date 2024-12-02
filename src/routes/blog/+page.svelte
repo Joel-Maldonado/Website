@@ -28,17 +28,17 @@
 </script>
 
 <div
-	class="relative min-h-screen bg-gradient-to-b from-space-grey/10 via-space-grey/20 to-space-grey/10"
+	class="relative min-h-screen bg-gradient-to-b from-space-grey/10 via-space-grey/10 to-space-grey/20"
 >
 	<Background
-		circleCount={10}
-		blurAmount={120}
+		circleCount={5}
+		blurAmount={70}
 		initialDelay={0}
-		baseTTL={1200}
-		rangeTTL={1500}
-		centerBias={0.1}
+		baseTTL={500}
+		rangeTTL={800}
+		centerBias={0.8}
 		baseRadius={30}
-		rangeRadius={50}
+		rangeRadius={70}
 	/>
 
 	{#if animate}
