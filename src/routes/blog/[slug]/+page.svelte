@@ -25,7 +25,7 @@
 	};
 </script>
 
-<div class="min-h-screen bg-space-grey/20">
+<div class="min-h-screen bg-space-grey">
 	<div class="flex justify-center p-4 sm:p-6 lg:p-8">
 		<div class="relative mt-5 w-[850px] rounded-lg">
 			<div class="relative z-10 px-6 py-12 sm:px-8 lg:px-12">

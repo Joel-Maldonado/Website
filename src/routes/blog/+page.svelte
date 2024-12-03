@@ -4,6 +4,7 @@
 	import Background from '$lib/components/Background.svelte';
 	import { onMount } from 'svelte';
 	import BlogCard from '$lib/components/BlogCard.svelte';
+	import Background2 from '$lib/components/Background2.svelte';
 
 	let { data } = $props();
 	let blogPosts = data.blogPosts;
@@ -27,22 +28,8 @@
 	}
 </script>
 
-<div
-	class="relative min-h-screen bg-gradient-to-b from-space-grey/10 via-space-grey/10 to-space-grey/20"
->
-	<Background
-		circleCount={8}
-		blurAmount={120}
-		initialDelay={0}
-		baseTTL={800}
-		rangeTTL={1300}
-		centerBias={0.5}
-		baseRadius={30}
-		rangeRadius={70}
-		baseSpeed={0.3}
-		rangeSpeed={0.5}
-		connectionDistance={1000}
-	/>
+<div class="relative min-h-screen">
+	<Background2 />
 
 	{#if animate}
 		<div class="relative z-10">

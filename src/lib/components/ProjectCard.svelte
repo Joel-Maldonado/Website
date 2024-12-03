@@ -5,7 +5,7 @@
 </script>
 
 <article
-	class="group overflow-hidden rounded-lg bg-neutral-800 shadow-lg shadow-black backdrop-blur-sm transition-all hover:bg-neutral-700"
+	class="bg-space-grey-600/100 hover:bg-space-grey-500 group overflow-hidden rounded-lg shadow-lg shadow-black/50 backdrop-blur-sm transition-all"
 >
 	{#if image}
 		<div class="aspect-video w-full overflow-hidden">
@@ -23,7 +23,7 @@
 		<div class="mb-8 flex flex-wrap gap-2">
 			{#each technologies as tech}
 				<span
-					class="rounded-full bg-neutral-700 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-neutral-500 group-hover:bg-neutral-600"
+					class="hover:bg-space-grey-500 group-hover:bg-space-grey-500 rounded-full bg-space-grey px-4 py-1.5 text-sm font-medium text-white/90 transition-colors"
 				>
 					{tech}
 				</span>

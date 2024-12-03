@@ -5,9 +5,11 @@
 	import Background from '$lib/components/Background.svelte';
 	import Card from '$lib/components/ProjectCard.svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
+	import Background2 from '$lib/components/Background2.svelte';
 
 	let animate = $state(false);
 	let showTableOfContents = $state(false);
+	let showProjects = $state(false);
 	let projects = $state([]);
 
 	const INITIAL_DELAY = 800; // First icon appears after this delay
@@ -18,7 +20,7 @@
 
 		const scrollHandler = () => {
 			if (window.scrollY > 100) {
-				// Changed from window.innerHeight * 0.5 to 100
+				showProjects = true;
 				showTableOfContents = true;
 				window.removeEventListener('scroll', scrollHandler);
 			}
@@ -84,9 +86,11 @@
 	</div>
 {/if}
 
-<header id="home" class="relative h-screen overflow-hidden bg-space-grey/10 p-12 text-center">
-	<Background />
+<div>
+	<Background2 />
+</div>
 
+<header id="home" class="relative h-screen overflow-hidden p-12 text-center backdrop-blur-sm">
 	{#if animate}
 		<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
 			<h1
@@ -138,20 +142,24 @@
 
 <section id="projects" class="relative min-h-screen px-4 py-20 sm:px-6 lg:px-8">
 	<div
-		class="absolute inset-0 bg-gradient-to-b from-space-grey/10 to-space-grey/20 backdrop-blur-sm"
+		class="absolute inset-0 from-[#141419] via-[#28282C]/50 to-space-grey backdrop-blur-sm"
 	></div>
 	<div class="relative z-10">
 		<h2 class="mb-12 text-center font-heebo text-4xl text-white">Featured Projects</h2>
 
 		<div class="mx-auto max-w-3xl space-y-10">
 			{#each projects as project}
-				<ProjectCard {...project} />
+				{#if showProjects}
+					<div transition:fly={{ duration: 1500, x: -100 }}>
+						<ProjectCard {...project} />
+					</div>
+				{/if}
 			{/each}
 
 			<div class="mt-12 text-center">
 				<a
 					href="/projects"
-					class="inline-flex items-center gap-2 rounded-lg bg-neutral-800/80 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-neutral-700/80"
+					class="bg-space-grey-600 hover:bg-space-grey-500 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-lg font-medium text-white transition-colors"
 				>
 					<span>See All Projects</span>
 					<Icon icon="mdi:arrow-right" class="text-2xl" />
@@ -165,36 +173,24 @@
 	@keyframes glow {
 		0% {
 			text-shadow:
-				0 0 30px rgba(255, 255, 255, 0.1),
-				0 0 60px rgba(255, 255, 255, 0.05);
+				0 0 25px rgba(255, 255, 255, 0.04),
+				0 0 50px rgba(255, 255, 255, 0.02);
 		}
-		25% {
+		35% {
 			text-shadow:
-				0 0 30px rgba(255, 255, 255, 0.3),
-				0 0 60px rgba(255, 255, 255, 0.2),
-				0 0 90px rgba(255, 255, 255, 0.1);
-		}
-		50% {
-			text-shadow:
-				0 0 30px rgba(255, 255, 255, 0.5),
-				0 0 60px rgba(255, 255, 255, 0.3),
-				0 0 90px rgba(255, 255, 255, 0.2);
-		}
-		75% {
-			text-shadow:
-				0 0 30px rgba(255, 255, 255, 0.3),
-				0 0 60px rgba(255, 255, 255, 0.2),
-				0 0 90px rgba(255, 255, 255, 0.1);
+				0 0 25px rgba(255, 255, 255, 0.25),
+				0 0 50px rgba(255, 255, 255, 0.18),
+				0 0 75px rgba(255, 255, 255, 0.1);
 		}
 		100% {
 			text-shadow:
-				0 0 30px rgba(255, 255, 255, 0.1),
-				0 0 60px rgba(255, 255, 255, 0.05);
+				0 0 25px rgba(255, 255, 255, 0.04),
+				0 0 50px rgba(255, 255, 255, 0.02);
 		}
 	}
 
 	.title-glow {
-		animation: glow 8s cubic-bezier(0.4, 0, 0.2, 1) 1;
+		animation: glow 5s cubic-bezier(0.4, 0, 0.2, 1) 1;
 		letter-spacing: -0.02em;
 	}
 

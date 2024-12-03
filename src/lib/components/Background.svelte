@@ -8,15 +8,15 @@
 		rangeSpeed = 0.03,
 		baseRadius = 40,
 		rangeRadius = 60,
-		parallaxStrength = 1,
-		blurAmount = 100,
+		parallaxStrength = 0.8,
+		blurAmount = 50,
 		initialDelay = 0,
 		baseTTL = 700,
 		rangeTTL = 1000,
-		centerBias = 0.95,
+		centerBias = 0.15,
 		connectionDistance = 1000,
 		burstSpeedMultiplier = 1,
-		burstDuration = 10,
+		burstDuration = 0,
 		burstBaseRadius = 50,
 		burstRangeRadius = 60
 	} = $props();
@@ -37,7 +37,7 @@
 	const xOff = 0.0015;
 	const yOff = 0.0015;
 	const zOff = 0.0015;
-	const backgroundColor = 'hsla(0%,0%,0%,1)';
+	const backgroundColor = 'transparent';
 	const TAU = Math.PI * 2;
 	let scrollY = 0;
 
@@ -48,7 +48,7 @@
 	let baseHue;
 	let animationFrame;
 	let isReady = $state(false);
-	let isBurst = $state(true); // New state for burst phase
+	let isBurst = $state(true);
 
 	const rand = (n) => n * Math.random();
 	const fadeInOut = (t, m) => {
@@ -77,7 +77,6 @@
 		let life = 0;
 		let ttl = baseTTL + rand(rangeTTL);
 
-		// Use different radius range during burst
 		let radius;
 		if (isBurst) {
 			radius = (burstBaseRadius + rand(burstRangeRadius)) * 0.2;
@@ -94,7 +93,6 @@
 		circleProps = new Float32Array(circlePropsLength);
 		baseHue = 220;
 
-		// Initialize regular circles
 		for (let i = 0; i < circlePropsLength; i += circlePropCount) {
 			initCircle(i);
 			circleProps[i + 4] = (i / circlePropCount) * (baseTTL / circleCount);
@@ -127,7 +125,6 @@
 		let radius = circleProps[i7];
 		let hue = circleProps[i8];
 
-		// Apply parallax offset to y position
 		const parallaxOffset = scrollY * parallaxStrength;
 		const adjustedY = y - parallaxOffset;
 
@@ -140,20 +137,17 @@
 		ctxA.closePath();
 		ctxA.restore();
 
-		// Speed up life during burst phase
 		if (isBurst) {
 			life += burstSpeedMultiplier;
 		} else {
 			life++;
 		}
 
-		// Handle radius growth consistently, regardless of burst
 		if (life < 50) {
 			radius = radius * 1.05;
 			circleProps[i7] = radius;
 		}
 
-		// Normal movement always
 		circleProps[i] = x + vx;
 		circleProps[i2] = y + vy;
 		circleProps[i5] = life;
@@ -194,7 +188,6 @@
 	function updateCircles() {
 		baseHue += 0.1;
 
-		// Update regular circles
 		for (let i = 0; i < circlePropsLength; i += circlePropCount) {
 			updateCircle(i);
 		}
@@ -235,58 +228,60 @@
 	onMount(() => {
 		if (!browser) return;
 
+		// Create and setup canvases immediately
 		canvasA = document.createElement('canvas');
 		canvasB = document.createElement('canvas');
 
+		// Set canvas styles before appending
 		canvasB.style.position = 'fixed';
 		canvasB.style.top = '0';
 		canvasB.style.left = '0';
 		canvasB.style.width = '100%';
 		canvasB.style.height = '100%';
+		canvasB.style.opacity = '0'; // Start invisible
+		canvasB.style.transition = 'opacity 1000ms';
+		canvasB.style.backgroundColor = backgroundColor;
 
 		container.appendChild(canvasB);
 
 		resize();
 		initCircles();
 
-		// Add delay before starting animation
-		setTimeout(() => {
-			isReady = true;
-			render();
+		// Start render immediately but keep canvas invisible
+		render();
 
-			// End burst phase after burstDuration
+		// After initial delay, fade in the canvas
+		setTimeout(() => {
+			canvasB.style.opacity = '1';
+
 			setTimeout(() => {
+				isReady = true;
 				isBurst = false;
-			}, burstDuration);
+			}, 1000); // Wait for fade in to complete
 		}, initialDelay);
 
-		// Add scroll listener
 		const handleScroll = () => {
 			scrollY = window.pageYOffset;
 		};
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
+		window.addEventListener('resize', resize, { passive: true }); // Added resize listener
 
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
+			window.removeEventListener('resize', resize);
 		};
 	});
 
 	onDestroy(() => {
 		if (!browser) return;
-		window.removeEventListener('resize', resize);
 		if (animationFrame) {
 			cancelAnimationFrame(animationFrame);
 		}
 	});
 </script>
 
-<div
-	bind:this={container}
-	class="fixed inset-0 h-[800px] w-full {isReady
-		? 'opacity-100'
-		: 'opacity-0'} transition-opacity duration-1000"
-></div>
+<div bind:this={container} class="pointer-events-none fixed inset-0 h-[800px] w-full"></div>
 
 <style>
 	div {

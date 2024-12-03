@@ -3,7 +3,7 @@
 </script>
 
 <article
-	class="group overflow-hidden rounded-lg bg-neutral-800/100 shadow-lg shadow-black backdrop-blur-sm transition-all hover:bg-neutral-700"
+	class="bg-space-grey-600 hover:bg-space-grey-500 group overflow-hidden rounded-lg shadow-lg shadow-black/50 backdrop-blur-sm transition-all"
 >
 	{#if thumbnail}
 		<div class="aspect-[16/9] w-full overflow-hidden">
@@ -33,7 +33,7 @@
 
 		<div class="flex flex-wrap gap-1">
 			{#each tags as tag}
-				<span class="rounded-full bg-neutral-700/50 px-2 py-1 text-xs font-medium text-white/80">
+				<span class="bg-space-grey-700/50 rounded-full px-2 py-1 text-xs font-medium text-white/80">
 					{tag}
 				</span>
 			{/each}

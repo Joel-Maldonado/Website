@@ -1,6 +1,9 @@
 <script>
 	import '../app.css';
+	import Icon from '@iconify/svelte';
 	let { children } = $props();
+
+	const currentYear = new Date().getFullYear();
 </script>
 
 <svelte:head>
@@ -32,8 +35,60 @@
 	{@render children()}
 </div>
 
+<footer class="mt-auto py-10 backdrop-blur-sm">
+	<div class="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
+		<p class="text-white/70">
+			© {currentYear} Joel Maldonado-Ruiz
+		</p>
+
+		<ul class="flex items-center gap-6">
+			<li>
+				<a
+					href="https://github.com/Joel-Maldonado"
+					target="_blank"
+					rel="noopener"
+					class="text-white/70 transition-colors hover:text-white"
+				>
+					<Icon icon="mdi:github" class="text-2xl" />
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://www.linkedin.com/in/joel-maldonado-ruiz/"
+					target="_blank"
+					rel="noopener"
+					class="text-white/70 transition-colors hover:text-white"
+				>
+					<Icon icon="mdi:linkedin" class="text-2xl" />
+				</a>
+			</li>
+			<li>
+				<a
+					href="mailto:maldonjo@oregonstate.edu"
+					target="_blank"
+					rel="noopener"
+					class="text-white/70 transition-colors hover:text-white"
+				>
+					<Icon icon="mdi:email" class="text-2xl" />
+				</a>
+			</li>
+			<li>
+				<a
+					href="https://drive.google.com/file/d/1dlkfjsdlksd"
+					target="_blank"
+					rel="noopener"
+					class="text-white/70 transition-colors hover:text-white"
+				>
+					<Icon icon="mdi:file-document" class="text-2xl" />
+				</a>
+			</li>
+		</ul>
+	</div>
+</footer>
+
 <style>
 	:global(body) {
-		background: black;
+		background-color: theme('colors.space-grey.900') !important;
+		min-height: 100vh;
 	}
 </style>
