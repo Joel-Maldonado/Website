@@ -27,9 +27,9 @@
 	}
 </script>
 
-<div class="relative min-h-screen">
-	<Background />
+<Background />
 
+<div class="relative min-h-screen backdrop-blur-sm">
 	{#if animate}
 		<div class="relative z-10">
 			<header class="py-20 text-center" transition:fade={{ duration: 1000 }}>

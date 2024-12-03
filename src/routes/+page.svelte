@@ -89,7 +89,7 @@
 <div class="bg-transparent backdrop-blur-sm">
 	<header
 		id="home"
-		class="relative h-[110vh] overflow-hidden bg-gradient-to-b from-black/40 via-black/10 to-transparent p-12 text-center"
+		class="relative h-[110vh] overflow-hidden bg-gradient-to-b from-black/30 to-transparent p-12 text-center"
 	>
 		{#if animate}
 			<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
