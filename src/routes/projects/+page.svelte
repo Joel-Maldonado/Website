@@ -1,9 +1,8 @@
 <script>
-	import { onMount } from 'svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
 	import Background from '$lib/components/Background.svelte';
 	import { fade, fly } from 'svelte/transition';
-	import Background2 from '$lib/components/Background2.svelte';
+	import { onMount } from 'svelte';
 
 	let projects = $state([]);
 	let animate = $state(false);
@@ -17,7 +16,7 @@
 </script>
 
 <div class="min-h-screen bg-gradient-to-b from-space-grey/10 via-space-grey/20 to-space-grey/10">
-	<Background2 />
+	<Background />
 
 	<div class="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
 		<div class="mx-auto max-w-3xl">

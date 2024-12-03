@@ -73,12 +73,7 @@
 				</a>
 			</li>
 			<li>
-				<a
-					href="https://drive.google.com/file/d/1dlkfjsdlksd"
-					target="_blank"
-					rel="noopener"
-					class="text-white/70 transition-colors hover:text-white"
-				>
+				<a href="/resume" rel="noopener" class="text-white/70 transition-colors hover:text-white">
 					<Icon icon="mdi:file-document" class="text-2xl" />
 				</a>
 			</li>
@@ -88,7 +83,7 @@
 
 <style>
 	:global(body) {
-		background-color: theme('colors.space-grey.900') !important;
+		background-color: theme('colors.space-grey.700');
 		min-height: 100vh;
 	}
 </style>

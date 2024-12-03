@@ -1,9 +1,9 @@
 ---
-title: "The Beginners Guide to Caching in Python: From Basics to Advanced Patterns (TESTING)"
+title: "The Beginners Guide to Caching in Python: From Basics to Advanced Patterns"
 author: Joel M.
 date: 2024/9/27
 description: "A guide to understanding and implementing introductionary caching in Python. Includes code examples, best practices, and common pitfalls to avoid."
-thumbnail: uses-of-caching.webp
+thumbnail: blogs/caching/uses-of-caching.webp
 readTime: 10 minutes
 ---
 

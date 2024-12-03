@@ -3,7 +3,7 @@ title: "The Advanced Guide to Caching in Python: From Theory to Production (Part
 author: Joel M.
 date: 2024/10/04
 description: "A deep dive into advanced caching patterns in Python, focusing on production-ready implementations, thread safety, and cache invalidation strategies."
-thumbnail: advanced-caching.webp
+thumbnail: blogs/caching-part-2/advanced-caching.webp
 readTime: 15 minutes
 ---
 

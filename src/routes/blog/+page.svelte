@@ -4,7 +4,6 @@
 	import Background from '$lib/components/Background.svelte';
 	import { onMount } from 'svelte';
 	import BlogCard from '$lib/components/BlogCard.svelte';
-	import Background2 from '$lib/components/Background2.svelte';
 
 	let { data } = $props();
 	let blogPosts = data.blogPosts;
@@ -29,14 +28,14 @@
 </script>
 
 <div class="relative min-h-screen">
-	<Background2 />
+	<Background />
 
 	{#if animate}
 		<div class="relative z-10">
 			<header class="py-20 text-center" transition:fade={{ duration: 1000 }}>
 				<h1 class="font-heebo text-5xl text-white">Blog</h1>
 				<p class="mt-4 text-lg text-white/80">
-					Thoughts on software engineering, AI, and chess engines
+					Adventures in software, technical deep dives, and interesting tangents
 				</p>
 			</header>
 

@@ -3,9 +3,7 @@
 	import { fade, fly } from 'svelte/transition';
 	import Icon from '@iconify/svelte';
 	import Background from '$lib/components/Background.svelte';
-	import Card from '$lib/components/ProjectCard.svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
-	import Background2 from '$lib/components/Background2.svelte';
 
 	let animate = $state(false);
 	let showTableOfContents = $state(false);
@@ -13,7 +11,7 @@
 	let projects = $state([]);
 
 	const INITIAL_DELAY = 800; // First icon appears after this delay
-	const DELAY_BETWEEN = 180; // Delay between each icon animationWhy isn't Background showing up anymore?
+	const DELAY_BETWEEN = 180; // Delay between each icon animation
 
 	onMount(async () => {
 		animate = true;
@@ -86,88 +84,89 @@
 	</div>
 {/if}
 
-<div>
-	<Background2 />
-</div>
+<Background />
 
-<header id="home" class="relative h-screen overflow-hidden p-12 text-center backdrop-blur-sm">
-	{#if animate}
-		<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
-			<h1
-				in:fly={{ y: -40, duration: 1800 }}
-				class="title-glow font-heebo text-8xl text-white drop-shadow-[0_2.4px_2.4px_rgba(0,0,0,0.8)]
+<div class="bg-transparent backdrop-blur-sm">
+	<header
+		id="home"
+		class="relative h-[110vh] overflow-hidden bg-gradient-to-b from-black/40 via-black/10 to-transparent p-12 text-center"
+	>
+		{#if animate}
+			<div class="relative z-10 flex h-full flex-col items-center justify-center gap-6">
+				<h1
+					in:fly={{ y: -40, duration: 1800 }}
+					class="title-glow font-heebo text-8xl text-white drop-shadow-[0_2.4px_2.4px_rgba(0,0,0,0.8)]
 "
-			>
-				Joel Maldonado-Ruiz
-			</h1>
-
-			<ul class="flex items-center px-16">
-				<li transition:fade={{ delay: INITIAL_DELAY }}>
-					<a href="https://github.com/Joel-Maldonado" target="_blank" rel="noopener"
-						><Icon icon="mdi:github" class="text-6xl text-white" /></a
-					>
-				</li>
-				<li
-					class="mx-4 h-12 w-px bg-white/20"
-					transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN }}
-				></li>
-				<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 2 }}>
-					<a href="https://www.linkedin.com/in/joel-maldonado-ruiz/" target="_blank" rel="noopener"
-						><Icon icon="mdi:linkedin" class="text-6xl text-white" /></a
-					>
-				</li>
-				<li
-					class="mx-4 h-12 w-px bg-white/20"
-					transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 3 }}
-				></li>
-				<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 4 }}>
-					<a href="mailto:maldonjo@oregonstate.edu" target="_blank" rel="noopener"
-						><Icon icon="mdi:email" class="text-6xl text-white" /></a
-					>
-				</li>
-				<li
-					class="mx-4 h-12 w-px bg-white/20"
-					transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 5 }}
-				></li>
-				<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 6 }}>
-					<!-- TODO: Fix resume link -->
-					<a href="https://drive.google.com/file/d/1dlkfjsdlksd" target="_blank" rel="noopener"
-						><Icon icon="mdi:file-document" class="text-6xl text-white" /></a
-					>
-				</li>
-			</ul>
-		</div>
-	{/if}
-</header>
-
-<section id="projects" class="relative min-h-screen px-4 py-20 sm:px-6 lg:px-8">
-	<div
-		class="absolute inset-0 from-[#141419] via-[#28282C]/50 to-space-grey backdrop-blur-sm"
-	></div>
-	<div class="relative z-10">
-		<h2 class="mb-12 text-center font-heebo text-4xl text-white">Featured Projects</h2>
-
-		<div class="mx-auto max-w-3xl space-y-10">
-			{#each projects as project}
-				{#if showProjects}
-					<div transition:fly={{ duration: 1500, x: -100 }}>
-						<ProjectCard {...project} />
-					</div>
-				{/if}
-			{/each}
-
-			<div class="mt-12 text-center">
-				<a
-					href="/projects"
-					class="bg-space-grey-600 hover:bg-space-grey-500 inline-flex items-center gap-2 rounded-lg px-6 py-3 text-lg font-medium text-white transition-colors"
 				>
-					<span>See All Projects</span>
-					<Icon icon="mdi:arrow-right" class="text-2xl" />
-				</a>
+					Joel Maldonado-Ruiz
+				</h1>
+
+				<ul class="flex items-center px-16">
+					<li transition:fade={{ delay: INITIAL_DELAY }}>
+						<a href="https://github.com/Joel-Maldonado" target="_blank" rel="noopener"
+							><Icon icon="mdi:github" class="text-6xl text-white" /></a
+						>
+					</li>
+					<li
+						class="mx-4 h-12 w-px bg-white/20"
+						transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN }}
+					></li>
+					<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 2 }}>
+						<a
+							href="https://www.linkedin.com/in/joel-maldonado-ruiz/"
+							target="_blank"
+							rel="noopener"><Icon icon="mdi:linkedin" class="text-6xl text-white" /></a
+						>
+					</li>
+					<li
+						class="mx-4 h-12 w-px bg-white/20"
+						transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 3 }}
+					></li>
+					<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 4 }}>
+						<a href="mailto:maldonjo@oregonstate.edu" target="_blank" rel="noopener"
+							><Icon icon="mdi:email" class="text-6xl text-white" /></a
+						>
+					</li>
+					<li
+						class="mx-4 h-12 w-px bg-white/20"
+						transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 5 }}
+					></li>
+					<li transition:fade={{ delay: INITIAL_DELAY + DELAY_BETWEEN * 6 }}>
+						<a href="/resume" rel="noopener"
+							><Icon icon="mdi:file-document" class="text-6xl text-white" /></a
+						>
+					</li>
+				</ul>
+			</div>
+		{/if}
+	</header>
+
+	<section id="projects" class="relative w-full px-4 py-16">
+		<div class="relative z-10">
+			<h2 class="mb-16 text-center font-heebo text-4xl text-white">Featured Projects</h2>
+
+			<div class="mx-auto max-w-3xl space-y-10">
+				{#each projects as project}
+					{#if showProjects}
+						<div transition:fly={{ duration: 1500, x: -100 }}>
+							<ProjectCard {...project} />
+						</div>
+					{/if}
+				{/each}
+
+				<div class="mt-12 text-center">
+					<a
+						href="/projects"
+						class="inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-space-grey-450"
+					>
+						<span>See All Projects</span>
+						<Icon icon="mdi:arrow-right" class="text-2xl" />
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+</div>
 
 <style>
 	@keyframes glow {
