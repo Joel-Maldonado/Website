@@ -11,7 +11,7 @@
 	let projects = $state([]);
 
 	const INITIAL_DELAY = 800; // First icon appears after this delay
-	const DELAY_BETWEEN = 180; // Delay between each icon animation
+	const DELAY_BETWEEN = 180; // Delay between each icon animationWhy isn't Background showing up anymore?
 
 	onMount(async () => {
 		animate = true;

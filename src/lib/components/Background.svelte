@@ -270,8 +270,6 @@
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
 		};
-
-		window.addEventListener('resize', resize);
 	});
 
 	onDestroy(() => {
@@ -285,7 +283,7 @@
 
 <div
 	bind:this={container}
-	class="fixed inset-0 h-[8000px] w-full {isReady
+	class="fixed inset-0 h-[800px] w-full {isReady
 		? 'opacity-100'
 		: 'opacity-0'} transition-opacity duration-1000"
 ></div>

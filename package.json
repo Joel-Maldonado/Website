@@ -3,6 +3,7 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
+		"start": "node build",
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
@@ -10,11 +11,13 @@
 		"lint": "prettier --check ."
 	},
 	"devDependencies": {
+		"@flydotio/dockerfile": "^0.5.9",
 		"@iconify-json/mdi": "^1.2.1",
 		"@iconify/json": "^2.2.277",
 		"@iconify/svelte": "^4.0.2",
 		"@iconify/tailwind": "^1.1.3",
 		"@sveltejs/adapter-auto": "^3.0.0",
+		"@sveltejs/adapter-node": "^5.2.9",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^4.0.0",
 		"autoprefixer": "^10.4.20",

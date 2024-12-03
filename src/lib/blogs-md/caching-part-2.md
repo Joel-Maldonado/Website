@@ -7,7 +7,7 @@ thumbnail: advanced-caching.webp
 readTime: 15 minutes
 ---
 
-In [Part 1](https://joelmr.com/blog/caching) of our caching guide, we covered the fundamentals of caching in Python. We learned about basic caching patterns, when to use them, and how to implement simple caches. Now, it's time to dive deep into the challenges you'll face when implementing caching in production systems.
+In <a href="/blog/caching" data-sveltekit-reload>Part 1</a> of our caching guide, we covered the fundamentals of caching in Python. We learned about basic caching patterns, when to use them, and how to implement simple caches. Now, it's time to dive deep into the challenges you'll face when implementing caching in production systems.
 
 ## Real-World Caching: Beyond the Basics
 

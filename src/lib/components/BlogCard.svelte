@@ -8,7 +8,7 @@
 	{#if thumbnail}
 		<div class="aspect-[16/9] w-full overflow-hidden">
 			<img
-				src={`src/lib/images/${thumbnail}`}
+				src={`images/${thumbnail}`}
 				alt={title}
 				class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
 			/>

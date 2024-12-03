@@ -10,7 +10,7 @@
 	{#if image}
 		<div class="aspect-video w-full overflow-hidden">
 			<img
-				src={`src/lib/images/${image}`}
+				src={`images/${image}`}
 				alt={title}
 				class="h-full w-full object-scale-down transition-transform duration-300 group-hover:scale-105"
 			/>
