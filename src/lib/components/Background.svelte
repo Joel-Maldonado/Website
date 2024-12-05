@@ -6,7 +6,7 @@
 	let animationId;
 	let time = 0;
 	let scrollY = 0;
-	const parallaxFactor = -0.2; // Increased for more dramatic scaling
+	const parallaxFactor = -0.2;
 
 	function handleScroll() {
 		scrollY = window.scrollY;

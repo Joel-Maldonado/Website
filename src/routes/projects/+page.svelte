@@ -12,6 +12,7 @@
 		const data = await response.json();
 		projects = data.projects;
 		animate = true;
+		document.title = 'Joel M. | Projects';
 	});
 </script>
 

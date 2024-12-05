@@ -1,11 +1,29 @@
 <script>
 	import Icon from '@iconify/svelte';
 
-	let { title, description, image, technologies, github, live } = $props();
+	let { title, description, image, technologies, github, live, size = 'medium' } = $props();
+
+	const sizeClasses = {
+		title: {
+			small: 'text-2xl',
+			medium: 'text-3xl',
+			large: 'text-4xl'
+		},
+		description: {
+			small: 'text-base',
+			medium: 'text-lg',
+			large: 'text-xl'
+		},
+		padding: {
+			small: 'p-4',
+			medium: 'p-6',
+			large: 'p-8'
+		}
+	};
 </script>
 
 <article
-	class="bg-space-grey-600/100 hover:bg-space-grey-500 group overflow-hidden rounded-lg shadow-lg shadow-black/50 backdrop-blur-sm transition-all"
+	class="group overflow-hidden rounded-lg bg-space-grey-600/100 shadow-lg shadow-black/50 backdrop-blur-sm transition-all hover:bg-space-grey-500"
 >
 	{#if image}
 		<div class="aspect-video w-full overflow-hidden">
@@ -16,14 +34,14 @@
 			/>
 		</div>
 	{/if}
-	<div class="p-6">
-		<h3 class="mb-4 font-heebo text-3xl text-white">{title}</h3>
-		<p class="mb-6 text-lg leading-relaxed text-white">{description}</p>
+	<div class={sizeClasses.padding[size]}>
+		<h3 class="mb-4 font-heebo {sizeClasses.title[size]} text-white">{title}</h3>
+		<p class="mb-6 {sizeClasses.description[size]} leading-relaxed text-white">{description}</p>
 
 		<div class="mb-8 flex flex-wrap gap-2">
 			{#each technologies as tech}
 				<span
-					class="hover:bg-space-grey-500 group-hover:bg-space-grey-500 rounded-full bg-space-grey px-4 py-1.5 text-sm font-medium text-white/90 transition-colors"
+					class="bg-space-grey rounded-full px-4 py-1.5 text-sm font-medium text-white/90 transition-colors hover:bg-space-grey-500 group-hover:bg-space-grey-500"
 				>
 					{tech}
 				</span>

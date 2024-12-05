@@ -4,11 +4,13 @@
 	import Icon from '@iconify/svelte';
 	import Background from '$lib/components/Background.svelte';
 	import ProjectCard from '$lib/components/ProjectCard.svelte';
+	import BlogCard from '$lib/components/BlogCard.svelte';
 
 	let animate = $state(false);
 	let showTableOfContents = $state(false);
 	let showProjects = $state(false);
 	let projects = $state([]);
+	let blogPosts = $state([]);
 
 	const INITIAL_DELAY = 800; // First icon appears after this delay
 	const DELAY_BETWEEN = 180; // Delay between each icon animation
@@ -25,9 +27,15 @@
 		};
 		window.addEventListener('scroll', scrollHandler);
 
-		const response = await fetch('/api/projects?limit=2');
-		const data = await response.json();
+		const projects_response = await fetch('/api/projects?limit=2');
+		const data = await projects_response.json();
 		projects = data.projects;
+
+		const blogPosts_response = await fetch('/api/blogs?limit=2');
+		const blogData = await blogPosts_response.json();
+		blogPosts = blogData;
+
+		console.log(blogPosts);
 
 		const observer = new IntersectionObserver(
 			(entries) => {
@@ -60,6 +68,7 @@
 
 	const sections = [
 		{ id: 'home', title: 'Home' },
+		{ id: 'recent-blogs', title: 'Blogs' },
 		{ id: 'projects', title: 'Projects' }
 	];
 
@@ -67,7 +76,7 @@
 </script>
 
 {#if showTableOfContents}
-	<div class="fixed left-8 top-1/2 z-20 -translate-y-1/2" transition:fade={{ duration: 300 }}>
+	<div class="fixed left-4 top-1/2 z-20 -translate-y-1/2" transition:fade={{ duration: 300 }}>
 		<nav class="table-of-contents space-y-4" data-scroll-nav>
 			{#each sections as section}
 				<a
@@ -141,20 +150,57 @@
 		{/if}
 	</header>
 
+	<!-- Blog Section -->
+	<section id="recent-blogs" class="relative w-full px-4 pb-8">
+		<div class="relative z-10">
+			<h2 class="mb-16 text-center font-heebo text-5xl text-white">Recent Blogs</h2>
+
+			<main class="mx-auto max-w-5xl px-4 pb-12">
+				<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
+					{#each blogPosts as post, index}
+						<div in:staggeredFade|global={{ delay: index * 150 }}>
+							<BlogCard {...post} />
+						</div>
+					{/each}
+				</div>
+			</main>
+
+			<div class="mx-auto my-12 max-w-2xl">
+				<div class="text-center">
+					<a
+						href="/blog"
+						class="inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-space-grey-450"
+					>
+						<span>See All Blogs</span>
+						<Icon icon="mdi:arrow-right" class="text-2xl" />
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Blog Section -->
+
+	<div class="mx-auto my-16 max-w-5xl">
+		<hr class="border-t-2 border-white/10" />
+	</div>
+
+	<!-- Project Section -->
 	<section id="projects" class="relative w-full px-4 py-16">
 		<div class="relative z-10">
-			<h2 class="mb-16 text-center font-heebo text-4xl text-white">Featured Projects</h2>
+			<h2 class="mb-16 text-center font-heebo text-5xl text-white">Featured Projects</h2>
 
-			<div class="mx-auto max-w-3xl space-y-10">
+			<div class="mx-auto max-w-2xl space-y-8">
 				{#each projects as project}
 					{#if showProjects}
 						<div transition:fly={{ duration: 1500, x: -100 }}>
-							<ProjectCard {...project} />
+							<ProjectCard {...project} size="small" />
 						</div>
 					{/if}
 				{/each}
+			</div>
 
-				<div class="mt-12 text-center">
+			<div class="mx-auto my-12 max-w-2xl">
+				<div class="text-center">
 					<a
 						href="/projects"
 						class="inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-space-grey-450"
@@ -166,6 +212,7 @@
 			</div>
 		</div>
 	</section>
+	<!-- Project Section -->
 </div>
 
 <style>
@@ -194,9 +241,9 @@
 	}
 
 	nav a {
-		font-size: 1.1rem;
+		font-size: 0.95rem;
 		font-weight: 500;
-		padding: 0.5rem 1rem;
+		padding: 0.4rem 0.8rem;
 		border-left: 2px solid rgba(255, 255, 255, 0.1);
 		text-decoration: none;
 	}

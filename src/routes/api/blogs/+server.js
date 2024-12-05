@@ -3,7 +3,9 @@ import { json } from '@sveltejs/kit';
 // Import all .md files from lib/blogs-md
 const blogFiles = import.meta.glob('$lib/blogs-md/*.md');
 
-export async function GET() {
+export async function GET({ url }) {
+    const limit = url.searchParams.get('limit');
+
     // Process all blog files
     const blogs = await Promise.all(
         Object.entries(blogFiles).map(async ([path, resolver]) => {
@@ -25,5 +27,5 @@ export async function GET() {
         return new Date(b.date) - new Date(a.date);
     });
 
-    return json(sortedBlogs);
+    return json(sortedBlogs.slice(0, limit ? parseInt(limit) : sortedBlogs.length));
 }
