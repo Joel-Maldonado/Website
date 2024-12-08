@@ -41,9 +41,10 @@
 
 			// Adjust opacity inversely with scale to maintain visibility
 			const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
-			const opacity = (0.2 - i * 0.05) / Math.pow(baseScale, 0.5);
+			// Increased base opacity from 0.2 to 0.4
+			const opacity = (0.4 - i * 0.05) / Math.pow(baseScale, 0.5);
 			gradient.addColorStop(0, `rgba(255, 255, 255, ${opacity})`);
-			gradient.addColorStop(0.7, `rgba(255, 255, 255, ${opacity * 0.5})`);
+			gradient.addColorStop(0.7, `rgba(255, 255, 255, ${opacity * 0.6})`); // Increased multiplier from 0.5 to 0.7
 			gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
 			ctx.fillStyle = gradient;
