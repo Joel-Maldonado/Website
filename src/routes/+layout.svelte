@@ -1,9 +1,16 @@
 <script>
+	import { fade, fly } from 'svelte/transition';
 	import '../app.css';
 	import Icon from '@iconify/svelte';
+	import { onMount } from 'svelte';
 	let { children } = $props();
 
+	let animate = $state(false);
+
 	const currentYear = new Date().getFullYear();
+	onMount(() => {
+		animate = true;
+	});
 </script>
 
 <svelte:head>
@@ -14,22 +21,24 @@
 	/>
 </svelte:head>
 
-<nav class="absolute left-0 right-0 top-0 z-20 px-12 py-8">
-	<ul class="flex justify-end gap-8 font-heebo font-light">
-		<li>
-			<a href="/" class="text-white/70 transition-colors hover:text-white">Home</a>
-		</li>
-		<li>
-			<a href="/projects" class="text-white/70 transition-colors hover:text-white">Projects</a>
-		</li>
-		<li>
-			<a href="/blog" class="text-white/70 transition-colors hover:text-white">Blog</a>
-		</li>
-		<li>
-			<a href="/about" class="text-white/70 transition-colors hover:text-white">About</a>
-		</li>
-	</ul>
-</nav>
+{#if animate}
+	<nav class="absolute left-0 right-0 top-0 z-20 px-12 py-8" transition:fade={{ duration: 1500 }}>
+		<ul class="flex justify-end gap-8 font-heebo font-light">
+			<li>
+				<a href="/" class="text-white/70 transition-colors hover:text-white">Home</a>
+			</li>
+			<li>
+				<a href="/projects" class="text-white/70 transition-colors hover:text-white">Projects</a>
+			</li>
+			<li>
+				<a href="/blog" class="text-white/70 transition-colors hover:text-white">Blog</a>
+			</li>
+			<li>
+				<a href="/about" class="text-white/70 transition-colors hover:text-white">About</a>
+			</li>
+		</ul>
+	</nav>
+{/if}
 
 <div>
 	{@render children()}

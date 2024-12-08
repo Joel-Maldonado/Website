@@ -22,7 +22,7 @@
 	class="from-space-grey/10 via-space-grey/20 to-space-grey/10 min-h-screen bg-gradient-to-b backdrop-blur-sm"
 >
 	<div class="relative z-10 px-4 py-20 sm:px-6 lg:px-8">
-		<div class="mx-auto max-w-3xl">
+		<div class="mx-auto max-w-2xl">
 			<h1 class="mb-12 text-center font-heebo text-6xl text-white">Projects</h1>
 
 			{#if animate}

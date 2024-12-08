@@ -9,6 +9,7 @@
 	let animate = $state(false);
 	let showTableOfContents = $state(false);
 	let showProjects = $state(false);
+	let showBlogs = $state(false);
 	let projects = $state([]);
 	let blogPosts = $state([]);
 
@@ -64,12 +65,28 @@
 				document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' });
 			});
 		});
+
+		// Add blog section observer
+		const blogObserver = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						showBlogs = true;
+						blogObserver.disconnect(); // Only trigger once
+					}
+				});
+			},
+			{ threshold: 0.2 }
+		);
+
+		const blogSection = document.getElementById('recent-blogs');
+		if (blogSection) blogObserver.observe(blogSection);
 	});
 
 	const sections = [
 		{ id: 'home', title: 'Home' },
-		{ id: 'recent-blogs', title: 'Blogs' },
-		{ id: 'projects', title: 'Projects' }
+		{ id: 'projects', title: 'Projects' },
+		{ id: 'recent-blogs', title: 'Blogs' }
 	];
 
 	let activeSection = $state(sections[0].id);
@@ -150,17 +167,69 @@
 		{/if}
 	</header>
 
-	<!-- Blog Section -->
-	<section id="recent-blogs" class="relative w-full px-4 pb-8">
+	<!-- Project Section -->
+	<section id="projects" class="relative w-full px-4 py-24">
 		<div class="relative z-10">
-			<h2 class="mb-16 text-center font-heebo text-5xl text-white">Recent Blogs</h2>
+			<h2 class="mb-16 text-center font-heebo text-5xl text-white">
+				<span class="relative">
+					Featured Projects
+					<span
+						class="absolute -bottom-4 left-1/2 h-1 w-24 -translate-x-1/2 rounded-full bg-white/20"
+					></span>
+				</span>
+			</h2>
 
-			<main class="mx-auto max-w-5xl px-4 pb-12">
+			<div class=" mx-auto max-w-xl">
+				{#each projects as project}
+					{#if showProjects}
+						<div transition:fly={{ duration: 1500, x: -100, opacity: 0.2 }}>
+							<ProjectCard {...project} size="medium" />
+						</div>
+					{/if}
+				{/each}
+			</div>
+
+			<div class="mx-auto mt-16 max-w-2xl">
+				<div class="text-center">
+					<a
+						href="/projects"
+						class="group inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-8 py-3 text-lg font-medium text-white transition-all hover:bg-space-grey-450 hover:shadow-lg hover:shadow-space-grey-500/25"
+					>
+						<span>View All Projects</span>
+						<Icon
+							icon="mdi:arrow-right"
+							class="text-2xl transition-transform group-hover:translate-x-1"
+						/>
+					</a>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<div class="mx-auto my-24 max-w-5xl">
+		<hr class="border-t-2 border-white/10" />
+	</div>
+
+	<!-- Blog Section -->
+	<section id="recent-blogs" class="relative w-full px-4 pb-24">
+		<div class="relative z-10">
+			<h2 class="mb-16 text-center font-heebo text-5xl text-white">
+				<span class="relative">
+					Recent Blogs
+					<span
+						class="absolute -bottom-4 left-1/2 h-1 w-24 -translate-x-1/2 rounded-full bg-white/20"
+					></span>
+				</span>
+			</h2>
+
+			<main class="mx-auto max-w-4xl px-4 pb-12">
 				<div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-2">
 					{#each blogPosts as post, index}
-						<div in:staggeredFade|global={{ delay: index * 150 }}>
-							<BlogCard {...post} />
-						</div>
+						{#if showBlogs}
+							<div transition:fly={{ delay: index * 150, duration: 1000, y: 100, opacity: 0.2 }}>
+								<BlogCard {...post} />
+							</div>
+						{/if}
 					{/each}
 				</div>
 			</main>
@@ -169,50 +238,19 @@
 				<div class="text-center">
 					<a
 						href="/blog"
-						class="inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-space-grey-450"
+						class="group inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-8 py-3 text-lg font-medium text-white transition-all hover:bg-space-grey-450 hover:shadow-lg hover:shadow-space-grey-500/25"
 					>
-						<span>See All Blogs</span>
-						<Icon icon="mdi:arrow-right" class="text-2xl" />
+						<span>Read All Blogs</span>
+						<Icon
+							icon="mdi:arrow-right"
+							class="text-2xl transition-transform group-hover:translate-x-1"
+						/>
 					</a>
 				</div>
 			</div>
 		</div>
 	</section>
 	<!-- Blog Section -->
-
-	<div class="mx-auto my-16 max-w-5xl">
-		<hr class="border-t-2 border-white/10" />
-	</div>
-
-	<!-- Project Section -->
-	<section id="projects" class="relative w-full px-4 py-16">
-		<div class="relative z-10">
-			<h2 class="mb-16 text-center font-heebo text-5xl text-white">Featured Projects</h2>
-
-			<div class="mx-auto max-w-2xl space-y-8">
-				{#each projects as project}
-					{#if showProjects}
-						<div transition:fly={{ duration: 1500, x: -100 }}>
-							<ProjectCard {...project} size="small" />
-						</div>
-					{/if}
-				{/each}
-			</div>
-
-			<div class="mx-auto my-12 max-w-2xl">
-				<div class="text-center">
-					<a
-						href="/projects"
-						class="inline-flex items-center gap-2 rounded-lg bg-space-grey-500 px-6 py-3 text-lg font-medium text-white transition-colors hover:bg-space-grey-450"
-					>
-						<span>See All Projects</span>
-						<Icon icon="mdi:arrow-right" class="text-2xl" />
-					</a>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- Project Section -->
 </div>
 
 <style>

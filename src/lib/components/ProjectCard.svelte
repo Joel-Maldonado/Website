@@ -26,32 +26,35 @@
 	class="group overflow-hidden rounded-lg bg-space-grey-600/100 shadow-lg shadow-black/50 backdrop-blur-sm transition-all hover:bg-space-grey-500"
 >
 	{#if image}
-		<div class="aspect-video w-full overflow-hidden">
+		<div class="aspect-[5/3] w-full overflow-hidden">
 			<img
 				src={`images/${image}`}
 				alt={title}
-				class="h-full w-full object-scale-down transition-transform duration-300 group-hover:scale-105"
+				class="h-full w-full object-scale-down object-center transition-transform duration-300 group-hover:scale-105"
 			/>
 		</div>
 	{/if}
-	<div class={sizeClasses.padding[size]}>
-		<h3 class="mb-4 font-heebo {sizeClasses.title[size]} text-white">{title}</h3>
-		<p class="mb-6 {sizeClasses.description[size]} leading-relaxed text-white">{description}</p>
 
-		<div class="mb-8 flex flex-wrap gap-2">
+	<div class={sizeClasses.padding[size] + ' space-y-2'}>
+		<h3 class="font-heebo {sizeClasses.title[size]} text-white">{title}</h3>
+		<p class="{sizeClasses.description[size]} line-clamp-3 leading-relaxed text-white/90">
+			{description}
+		</p>
+
+		<div class="flex flex-wrap gap-1">
 			{#each technologies as tech}
 				<span
-					class="bg-space-grey rounded-full px-4 py-1.5 text-sm font-medium text-white/90 transition-colors hover:bg-space-grey-500 group-hover:bg-space-grey-500"
+					class="rounded-full bg-space-grey-500 px-3 py-1 text-sm font-medium text-white/90 transition-all group-hover:bg-space-grey-400/20"
 				>
 					{tech}
 				</span>
 			{/each}
 		</div>
 
-		<div class="flex gap-6">
+		<div class="flex gap-4 pt-2">
 			<a
 				href={github}
-				class="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
+				class="flex items-center gap-2 rounded-lg px-4 py-2 text-white/80 transition-all hover:bg-space-grey-700 hover:text-white"
 				target="_blank"
 				rel="noopener"
 			>
@@ -61,7 +64,7 @@
 			{#if live}
 				<a
 					href={live}
-					class="flex items-center gap-2 text-white/80 transition-colors hover:text-white"
+					class="flex items-center gap-2 rounded-lg px-4 py-2 text-white/80 transition-all hover:bg-space-grey-700 hover:text-white"
 					target="_blank"
 					rel="noopener"
 				>
